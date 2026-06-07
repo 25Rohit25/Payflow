@@ -42,6 +42,17 @@ graph TD
     end
 ```
 
+## Tech Stack & Core Libraries
+
+- **Java 17 & Spring Boot 3:** Provides a robust, enterprise-grade backend framework.
+- **PostgreSQL:** Acts as the primary data store. Utilized for its strong ACID compliance and row-level locking capabilities, which are critical for the double-entry ledger.
+- **Apache Kafka:** Serves as the event broker. Decouples core financial transactions from secondary processes like the Fraud Risk Engine, allowing the main transfer API to remain extremely fast.
+- **Bucket4j & Redis:** Implements strict API Rate Limiting to prevent DDoS attacks and spam on financial endpoints.
+- **JSON Web Tokens (JWT):** Secures the API using stateless authentication.
+- **Flyway:** Manages and versions the database schema changes (`V1__init_schema.sql`), ensuring strict schema enforcement over fragile Hibernate auto-updates.
+- **K6:** Used for heavy load testing to verify TPS (Transactions Per Second) and p95 latency under high concurrency.
+- **Prometheus & Grafana:** Hooks into Spring Actuator to provide real-time observability over JVM metrics, database connection pools, and API latency.
+
 ## How to Run This Project
 
 ### Prerequisites
