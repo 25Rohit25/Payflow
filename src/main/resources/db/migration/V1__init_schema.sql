@@ -2,8 +2,6 @@
 -- PostgreSQL database dump
 --
 
-\restrict A5cBrOQd5hrmg0gyDWsPPyAwFYxHKP2XWBsvaZcthBcqpD3SkG3NyQWNaXU5mlr
-
 -- Dumped from database version 15.18
 -- Dumped by pg_dump version 15.18
 
@@ -392,6 +390,3 @@ ALTER TABLE ONLY public.wallets_aud
 --
 -- PostgreSQL database dump complete
 --
-
-\unrestrict A5cBrOQd5hrmg0gyDWsPPyAwFYxHKP2XWBsvaZcthBcqpD3SkG3NyQWNaXU5mlr
-

@@ -31,6 +31,7 @@ public class Wallet {
     @Column(nullable = false, length = 3)
     private String currency;
     
+    @Builder.Default
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal balance = BigDecimal.ZERO;
     
