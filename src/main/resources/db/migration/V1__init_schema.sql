@@ -20,25 +20,6 @@ SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
---
--- Name: flyway_schema_history; Type: TABLE; Schema: public; Owner: payflow
---
-
-CREATE TABLE public.flyway_schema_history (
-    installed_rank integer NOT NULL,
-    version character varying(50),
-    description character varying(200) NOT NULL,
-    type character varying(20) NOT NULL,
-    script character varying(1000) NOT NULL,
-    checksum integer,
-    installed_by character varying(100) NOT NULL,
-    installed_on timestamp without time zone DEFAULT now() NOT NULL,
-    execution_time integer NOT NULL,
-    success boolean NOT NULL
-);
-
-
-ALTER TABLE public.flyway_schema_history OWNER TO payflow;
 
 --
 -- Name: fraud_logs; Type: TABLE; Schema: public; Owner: payflow
@@ -244,13 +225,6 @@ CREATE TABLE public.wallets_aud (
 
 ALTER TABLE public.wallets_aud OWNER TO payflow;
 
---
--- Name: flyway_schema_history flyway_schema_history_pk; Type: CONSTRAINT; Schema: public; Owner: payflow
---
-
-ALTER TABLE ONLY public.flyway_schema_history
-    ADD CONSTRAINT flyway_schema_history_pk PRIMARY KEY (installed_rank);
-
 
 --
 -- Name: fraud_logs fraud_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: payflow
@@ -363,12 +337,6 @@ ALTER TABLE ONLY public.wallets_aud
 ALTER TABLE ONLY public.wallets
     ADD CONSTRAINT wallets_pkey PRIMARY KEY (id);
 
-
---
--- Name: flyway_schema_history_s_idx; Type: INDEX; Schema: public; Owner: payflow
---
-
-CREATE INDEX flyway_schema_history_s_idx ON public.flyway_schema_history USING btree (success);
 
 
 --
