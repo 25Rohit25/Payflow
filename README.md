@@ -20,10 +20,16 @@ Building financial applications is notoriously difficult because data consistenc
 
 ```mermaid
 graph TD
-    Client[Client / Swagger UI] -->|REST API| API[Spring Boot REST API]
+    Client[Client / Load Tester] -->|REST API + JWT Token| API[Spring Boot REST API]
+    
+    subgraph Security & Access
+    API -->|Authenticate| JWT[JWT Filter]
+    JWT -->|Rate Limit Check| Bucket4j[Bucket4j Interceptor]
+    Bucket4j -->|Fetch Limits| Redis[(Redis)]
+    end
     
     subgraph Core Application
-    API -->|Idempotency Check| Filter[Idempotency Filter]
+    Bucket4j -->|Idempotency Check| Filter[Idempotency Filter]
     Filter -->|Route| Controllers[Wallet/Deposit/Transfer Controllers]
     Controllers -->|Process| Services[Ledger Services]
     end
@@ -37,8 +43,14 @@ graph TD
     subgraph Event Driven Architecture
     Outbox -->|Polled by| Scheduler[Outbox Scheduler]
     Scheduler -->|Publish| Kafka[Apache Kafka]
-    Kafka -->|Consume| Fraud[Fraud Detection Service]
+    Kafka -->|Consume| Fraud[Fraud Risk Engine]
     Fraud -->|Action| Alert[Flag Transaction / Lock Wallet]
+    end
+    
+    subgraph Observability
+    API -.->|Expose Metrics| Actuator[Spring Actuator]
+    Actuator -.->|Scrape| Prometheus[Prometheus]
+    Prometheus -.->|Visualize| Grafana[Grafana Dashboards]
     end
 ```
 
