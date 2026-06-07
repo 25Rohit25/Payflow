@@ -32,17 +32,23 @@ public class FraudDetectionServiceImpl implements FraudDetectionService {
     @Override
     @Transactional
     public void inspectTransaction(PaymentEvent event) {
-        // We only inspect DEBITS (outbound money) for velocity/spend rules logically
-        // The event sourceWalletId is the spender.
         UUID targetWalletToCheck = event.sourceWalletId();
         
+        int totalRiskScore = 0;
+        StringBuilder reasons = new StringBuilder();
+
         for (FraudRule rule : rules) {
-            if (rule.isFraudulent(event)) {
-                log.warn("FRAUD DETECTED: Transaction {} violated rule '{}'", event.transactionId(), rule.getRuleName());
-                triggerFraudAction(targetWalletToCheck, event.transactionId(), rule.getRuleName());
-                // Short-circuit on first violation
-                return;
+            int score = rule.calculateRiskScore(event);
+            if (score > 0) {
+                totalRiskScore += score;
+                reasons.append(rule.getRuleName()).append(" (+").append(score).append("), ");
             }
+        }
+
+        if (totalRiskScore >= 70) {
+            String combinedReason = "Risk Score " + totalRiskScore + ": " + reasons.toString();
+            log.warn("FRAUD DETECTED: Transaction {} flagged with {}", event.transactionId(), combinedReason);
+            triggerFraudAction(targetWalletToCheck, event.transactionId(), combinedReason);
         }
     }
 

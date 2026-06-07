@@ -4,12 +4,10 @@ import com.stripe.payflow.infrastructure.kafka.event.PaymentEvent;
 
 public interface FraudRule {
     /**
-     * @return true if the event violates this rule.
+     * @param event The payment event to analyze
+     * @return Risk score (0 to 100) added by this rule
      */
-    boolean isFraudulent(PaymentEvent event);
-
-    /**
-     * @return The descriptive name/reason of the rule.
-     */
+    int calculateRiskScore(PaymentEvent event);
+    
     String getRuleName();
 }

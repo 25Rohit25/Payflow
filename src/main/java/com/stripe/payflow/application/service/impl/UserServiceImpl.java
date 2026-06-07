@@ -13,11 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -33,8 +36,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(nameParts.length > 1 ? nameParts[1] : "");
         user.setEmail(request.email());
         user.setStatus("ACTIVE");
-        // In a real app, this should be encoded via PasswordEncoder
-        user.setPasswordHash(request.password()); 
+        user.setPasswordHash(passwordEncoder.encode(request.password()));
 
         user = userRepository.save(user);
         return new UserResponse(user.getId(), user.getFirstName() + " " + user.getLastName(), user.getEmail(), user.getCreatedAt());

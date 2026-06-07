@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,6 +31,9 @@ public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, UUID> 
 
     int countByWalletIdAndCreatedAtAfter(UUID walletId, LocalDateTime timestamp);
 
-    @Query("SELECT COALESCE(SUM(e.amount), 0) FROM LedgerEntry e WHERE e.walletId = :walletId AND e.direction = 'DEBIT' AND e.createdAt >= :timestamp")
-    java.math.BigDecimal sumDebitAmountByWalletIdAndCreatedAtAfter(@Param("walletId") UUID walletId, @Param("timestamp") LocalDateTime timestamp);
+    @Query("SELECT SUM(l.amount) FROM LedgerEntry l WHERE l.walletId = :walletId AND l.direction = 'DEBIT' AND l.createdAt >= :since")
+    BigDecimal sumDebitAmountByWalletIdAndCreatedAtAfter(@Param("walletId") UUID walletId, @Param("since") LocalDateTime since);
+
+    @Query("SELECT AVG(l.amount) FROM LedgerEntry l WHERE l.walletId = :walletId AND l.direction = 'DEBIT'")
+    BigDecimal getAverageDebitAmountByWalletId(@Param("walletId") UUID walletId);
 }
