@@ -94,3 +94,10 @@ Once the application says `Started PayflowApplication`, open the interactive Swa
 4. **Transfer Funds:** Create a second wallet and use the `Transfer Controller` to safely send money between them.
 
 All transactions will instantly be safely recorded in the double-entry ledger!
+
+Screeshot
+<img width="608" height="349" alt="image" src="https://github.com/user-attachments/assets/5688edb8-0669-4eb2-8de7-5e793f5299ec" />
+<img width="1536" height="1024" alt="d1f8f775-73f2-49e3-83a1-282cec4fe26c" src="https://github.com/user-attachments/assets/7c391d2f-eb67-49a2-bd6a-9fc28715f191" />
+<img width="1536" height="1024" alt="6fc77e43-cbd5-4239-bba0-401c11bf074d" src="https://github.com/user-attachments/assets/70ae5d14-3c7f-4873-9fbe-6909af946101" />
+
+
